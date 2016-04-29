@@ -9,7 +9,6 @@ module.exports = function(shipit) {
       deployTo: deployPath,
       repositoryUrl: 'git@github.com:robtarr/house-hunter.git',
       ignores: ['.git', 'node_modules'],
-      // rsync: ['--del'],
       keepReleases: 2,
       key: '/Users/Rob/.ssh/id_rsa',
       shallowClone: false,
