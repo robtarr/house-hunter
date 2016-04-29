@@ -17,8 +17,4 @@ module.exports = function(shipit) {
       servers: '159.203.92.26'
     }
   });
-
-  shipit.on('deployed', function() {
-    return shipit.remote('cd ' + deployPath + '/current' + ' && npm install');
-  });
 };
