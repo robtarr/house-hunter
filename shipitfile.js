@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 module.exports = function(shipit) {
   require('shipit-deploy')(shipit);
 
@@ -11,10 +13,10 @@ module.exports = function(shipit) {
       ignores: ['.git', 'node_modules'],
       keepReleases: 2,
       key: '/Users/Rob/.ssh/id_rsa',
-      shallowClone: false,
+      shallowClone: false
     },
     production: {
-      servers: '159.203.92.26'
+      servers: `${process.env.deployUser}@${process.env.deployServer}`
     }
   });
 };

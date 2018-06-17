@@ -6,8 +6,13 @@ const request = require('request-promise');
 const _ = require('lodash');
 const chalk = require('chalk');
 const slack = require('./slack');
+const realtor = require('./sites/realtor');
+const trulia = require('./sites/trulia');
+const dabr = require('./sites/dabr');
 
-let homes = [];
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+});
 
 function loadLastList() {
   const data = fs.readFileSync('activeHomes.json', 'utf8') || '[]';
@@ -23,34 +28,10 @@ function compare(oldList, newList) {
   return _.differenceBy(newList, oldList, 'address');
 }
 
-function getHouseList() {
-  let options = {
-    uri: process.env.MLS_URL,
-    transform: (body) => {
-      return cheerio.load(body);
-    }
-  };
-
-  return request(options).then(function($) {
-
-    $('.singleLineDisplay').each(function(i, e) {
-      const status = $(this).find('.d5m13').text(),
-            address = $(this).find('.d5m14').text(),
-            price = $(this).find('.d5m21').text();
-
-      homes.push({
-        status,
-        address,
-        price,
-      });
-    });
-  });
-}
-
 function slackIt(newHomes) {
-  newHomes.forEach((home) => {
+  newHomes.forEach(home => {
     slack({
-      text: `<!channel> ${home.address} for${home.price}. ${process.env.MLS_URL}`
+      text: `${home.address} for ${home.price} -> ${home.link}`
     });
   });
 }
@@ -58,9 +39,18 @@ function slackIt(newHomes) {
 function getHomes() {
   const lastActive = loadLastList();
 
-  getHouseList().then(function() {
-    const active = homes.filter(function(house) {
-      return house.status === 'Active';
+  Promise.all([dabr(), realtor(), trulia()]).then(homes => {
+    const allHomes = _.flatten(homes);
+    const uniqHomes = [];
+
+    allHomes.forEach(house => {
+      if (_.findIndex(uniqHomes, { address: house.address }) < 0) {
+        uniqHomes.push(house);
+      }
+    });
+
+    const active = uniqHomes.filter(function(house) {
+      return house.status.toLowerCase() === 'active';
     });
 
     const newHomes = compare(lastActive, active);
