@@ -9,6 +9,7 @@ const slack = require('./slack');
 const realtor = require('./sites/realtor');
 const trulia = require('./sites/trulia');
 const dabr = require('./sites/dabr');
+const forsalebyowner = require('./sites/forsalebyowner');
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
@@ -39,7 +40,7 @@ function slackIt(newHomes) {
 function getHomes() {
   const lastActive = loadLastList();
 
-  Promise.all([dabr(), realtor(), trulia()]).then(homes => {
+  Promise.all([realtor(), dabr(), trulia(), forsalebyowner()]).then(homes => {
     const allHomes = _.flatten(homes);
     const uniqHomes = [];
 
