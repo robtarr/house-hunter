@@ -21,7 +21,10 @@ const getHouseList = () => {
         status = 'active';
       }
 
-      const address = $el.find('.listing-title .address-line1').text();
+      const address = $el
+        .find('.listing-title .address-line1')
+        .text()
+        .replace(/(.*) Drive$/, '$1 Dr');
       const price = $el.find('.listPrice .field-value').text();
       const link = $el.find('.listing-title a').attr('href');
 
