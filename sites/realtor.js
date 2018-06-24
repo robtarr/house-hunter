@@ -22,7 +22,7 @@ const getHouseList = () => {
       }
 
       const address = $el.find('.listing-street-address').text();
-      const price = $el.find('.data-price').text();
+      const price = $el.find('.data-price-display').text();
       const link = `http://realtor.com/realestateandhomes-detail${
         $el.data().url
       }`;
