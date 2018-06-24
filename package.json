@@ -9,7 +9,7 @@
   "main": "house-hunter.js",
   "scripts": {
     "start": "node house-hunter.js",
-    "deploy": "shipit production deploy",
+    "deploy": "mkdir /tmp/house-hunter && shipit production deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -20,6 +20,7 @@
     "dotenv": "^6.0.0",
     "lodash": "^4.17.10",
     "request-promise": "^4.2.2",
+    "shipit-shared": "^4.4.2",
     "slack-client": "^2.0.6"
   },
   "devDependencies": {
