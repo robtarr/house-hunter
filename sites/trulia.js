@@ -2,8 +2,8 @@ const cheerio = require('cheerio');
 const request = require('request-promise');
 
 const getHouseList = () => {
-  const { maxPrice, bedrooms, bathrooms, city, state } = process.env;
-  const URL = `https://www.trulia.com/for_sale/${city},${state}/${bedrooms}p_beds/${bathrooms}p_baths/0-${maxPrice}_price/`;
+  const { maxPrice, bedrooms, bathrooms, city, state, sqft } = process.env;
+  const URL = `https://www.trulia.com/for_sale/${city},${state}/${bedrooms}p_beds/${bathrooms}p_baths/0-${maxPrice}_price/${sqft}p_sqft/`;
 
   const options = {
     uri: URL,
