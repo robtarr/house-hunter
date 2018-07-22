@@ -29,9 +29,10 @@ const getHouseList = () => {
         .replace(/(.*) Road$/, '$1 Rd')
         .replace(/(.*) Lane$/, '$1 Ln')
         .replace(/(.*) Court$/, '$1 Ct');
-      const price = $el.find('.d-fontSize--largest').text();
-
-      homes.push({ status, address, price, link: URL });      
+      const price = $el.find('.d-fontSize--largest').eq(0).text();
+      const image = $el.find('img').attr('src');
+      
+      homes.push({ status, address, price, link: URL, image });
     });
 
     return homes;

@@ -33,7 +33,8 @@ function compare(oldList, newList) {
 function slackIt(newHomes) {
   newHomes.forEach(home => {
     slack({
-      text: `${home.address} for ${home.price} -> ${home.link}`
+      text: `${home.address} for ${home.price} -> ${home.link}`,
+      image: home.image
     });
   });
 }
